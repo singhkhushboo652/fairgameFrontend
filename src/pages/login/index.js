@@ -82,17 +82,17 @@ export default function Login() {
         console.log("error", !error[1].val, !error[2].val, loginDetail[1].val !== "", loginDetail[2].val !== "")
         if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") {
             try {
-                // const { data } = await axios.post(`/auth/login`, loginDetail);
-                const data = {
-                    "message": "User login successfully.",
-                    "data": {
-                        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhaXJHYW1lV2FsbGV0Iiwic3ViIjoiMmJhOTFmYjEtNDEzNS00ZDhiLThlZTMtOTY4MjdkMDcxNmQzIiwicm9sZSI6ImZhaXJHYW1lV2FsbGV0IiwiaWF0IjoxNjc4MDgyODQyLCJleHAiOjE2NzgxNjkyNDJ9.J8_CUaI7sTAIenwomWYkWQTfpJlWR_OBfmd_ysbR9SQ",
-                        "username": "fairGameWallet",
-                        "id": "2ba91fb1-4135-4d8b-8ee3-96827d0716d3",
-                        "roleId": "885e61f9-5c0a-4bac-861c-5ce30ee066b2",
-                        "role": "superAdmin"
-                    }
-                }
+                const { data } = await axios.post(`/auth/login`, loginDetail);
+                // const data = {
+                //     "message": "User login successfully.",
+                //     "data": {
+                //         "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhaXJHYW1lV2FsbGV0Iiwic3ViIjoiMmJhOTFmYjEtNDEzNS00ZDhiLThlZTMtOTY4MjdkMDcxNmQzIiwicm9sZSI6ImZhaXJHYW1lV2FsbGV0IiwiaWF0IjoxNjc4MDgyODQyLCJleHAiOjE2NzgxNjkyNDJ9.J8_CUaI7sTAIenwomWYkWQTfpJlWR_OBfmd_ysbR9SQ",
+                //         "username": "fairGameWallet",
+                //         "id": "2ba91fb1-4135-4d8b-8ee3-96827d0716d3",
+                //         "roleId": "885e61f9-5c0a-4bac-861c-5ce30ee066b2",
+                //         "role": "superAdmin"
+                //     }
+                // }
                 if (data.message === "User login successfully.") {
                     dispatch(stateActions.setUser(data.data.role, data.data.access_token));
                     switch (data.data.role) {
