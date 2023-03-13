@@ -1,6 +1,7 @@
 import { useTheme } from "@emotion/react"
 import { Box, Typography, useMediaQuery } from "@mui/material"
 import { display, width } from "@mui/system"
+import { useEffect, useState } from "react"
 import { Header, Info, Lock, TEAMLOGO, TEAMLOGO1 } from "../assets"
 import './index.css'
 const SeperateBox = ({ color, empty, value, value2, lock }) => {
@@ -27,7 +28,7 @@ const Divider = () => {
         <Box sx={{ width: '99%', background: 'rgba(211,211,211)', height: '1px' }} ></Box>
     )
 }
-const Odds = ({ upcoming, onClick, top, blur }) => {
+const Odds = ({ upcoming, onClick, top, blur, match }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     return (
@@ -35,7 +36,6 @@ const Odds = ({ upcoming, onClick, top, blur }) => {
             {upcoming && <Box sx={{ position: 'absolute', zIndex: 2, background: 'rgba(0,0,0,0.5)', width: '100%', right: 0, height: '144px' }} ></Box>}
 
             {upcoming && <Box sx={{ width: '70px', zIndex: 3, border: '1px solid white', height: { mobile: '20px', laptop: '13px' }, justifyContent: 'center', display: 'flex', alignItems: 'center', background: '#129FFE', position: 'absolute', marginTop: -1, borderRadius: '3px', marginLeft: 1 }} >
-
                 <Typography sx={{ fontStyle: 'italic', fontSize: { laptop: '10px', mobile: "10px" }, fontWeight: '600', color: 'white' }} >UPCOMING</Typography>
             </Box>}
             <Box onClick={onClick} sx={{ zIndex: 0, filter: blur ? "blur(0px)" : null, display: 'flex', position: 'relative', flexDirection: 'column', alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start', }, background: 'white' }}>
@@ -44,7 +44,7 @@ const Odds = ({ upcoming, onClick, top, blur }) => {
                 </Box>}
                 <Box sx={{ display: 'flex', height: '38px', flexDirection: 'row', width: '99.7%', alignSelf: 'center' }}>
                     <Box sx={{ flex: 1.2, background: '#f1c550', alignItems: { laptop: 'center', mobile: 'flex-end' }, display: 'flex', }}>
-                        <Typography noWrap={true} sx={{ marginBottom: '2px', fontSize: { laptop: '14px', mobile: "10px" }, fontWeight: 'bold', marginLeft: '7px' }} >Team A vs Team B <span style={{ fontWeight: '500' }} >Today at 9:30 PM</span></Typography>
+                        <Typography noWrap={true} sx={{ marginBottom: '2px', fontSize: { laptop: '14px', mobile: "10px" }, fontWeight: 'bold', marginLeft: '7px' }} >{match.teamA} vs {match.teamB} <span style={{ fontWeight: '500' }} >{match.startAt}</span></Typography> {/* Today at 9:30 PM */}
                     </Box>
                     <Box sx={{
                         flex: .1, background: '#262626'
@@ -58,7 +58,6 @@ const Odds = ({ upcoming, onClick, top, blur }) => {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-
                     }}>
                         <Box sx={{ height: '80%', marginRight: '3px', borderRadius: '4px', width: '110px', background: 'white', justifyContent: "space-evenly", display: 'flex', alignSelf: 'flex-end' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }} >
@@ -91,7 +90,7 @@ const Odds = ({ upcoming, onClick, top, blur }) => {
                 {
                     <Box sx={{ display: 'flex', background: '#319E5B', height: '25px', width: '99.7%', alignSelf: 'center' }} >
                         <Box sx={{ display: 'flex', background: "'#319E5B'", height: '25px', width: '40%', alignItems: 'center' }} >
-                            <Typography sx={{ color: 'white', fontSize: { laptop: '11px', mobile: "9px" }, marginLeft: '7px' }} >MIN: 4000 MAX:4500</Typography>
+                            <Typography sx={{ color: 'white', fontSize: { laptop: '11px', mobile: "9px" }, marginLeft: '7px' }} >MIN: {match.betfair_match_min_bet} MAX: {match.betfair_match_max_bet}</Typography>
                         </Box>
                         <Box sx={{ display: 'flex', background: '#319E5B', height: '25px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { laptop: 'center', mobile: 'flex-end' } }} >
                             <Box sx={{ background: "#00C0F9", width: { laptop: '16.5%', mobile: "25%" }, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
@@ -109,7 +108,7 @@ const Odds = ({ upcoming, onClick, top, blur }) => {
                 <Box sx={{ display: 'flex', background: 'white', height: '40px', width: '100%', alignItems: 'center' }} >
                     <Box sx={{ display: 'flex', background: 'white', height: '40px', width: '40%', alignItems: 'center' }} >
                         <img src={TEAMLOGO} style={{ width: '25px', height: '25px', marginLeft: '10px' }} />
-                        <Typography sx={{ color: 'black', fontSize: { laptop: '11px', tablet: '10px', mobile: "10px" }, marginLeft: '7px', fontWeight: '600' }} >Team A</Typography>
+                        <Typography sx={{ color: 'black', fontSize: { laptop: '11px', tablet: '10px', mobile: "10px" }, marginLeft: '7px', fontWeight: '600' }} >{match.teamA}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'center' }, alignItems: 'center' }} >
                         {!matchesMobile && <SeperateBox value={"1.71"} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />
@@ -133,7 +132,7 @@ const Odds = ({ upcoming, onClick, top, blur }) => {
                 <Box sx={{ display: 'flex', background: 'white', height: '40px', width: '100%', alignItems: 'center' }} >
                     <Box sx={{ display: 'flex', background: 'white', height: '40px', width: '40%', alignItems: 'center' }} >
                         <img src={TEAMLOGO1} style={{ width: '25px', height: '25px', marginLeft: '10px' }} />
-                        <Typography sx={{ color: 'black', fontSize: { laptop: '12px', mobile: "11px" }, marginLeft: '7px', fontWeight: '600' }} >Team B</Typography>
+                        <Typography sx={{ color: 'black', fontSize: { laptop: '12px', mobile: "11px" }, marginLeft: '7px', fontWeight: '600' }} >{match.teamB}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: 'center', alignItems: 'center' }} >
                         {!matchesMobile && <SeperateBox value={"1.71"} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />}
@@ -158,12 +157,71 @@ const Odds = ({ upcoming, onClick, top, blur }) => {
     )
 }
 const MatchesComponent = ({ onClick }) => {
+    const [matchData, setMatchData] = useState([])
+    const getAllMatches = async () => {
+        try {
+          // const { data } = await userAxios.get(`/game-match/getAllMatch`);
+          const {data} = {
+            data: [
+              {
+                id: "aa56cbb1-5f29-4514-92bb-087c976447a2",
+                isActive: true,
+                createAt: "2023-03-10T05:47:41.698Z",
+                updateAt: "2023-03-10T05:47:41.698Z",
+                createdBy: "dd432377-9f9d-4248-917d-85b16dfeb7e7",
+                deletedAt: null,
+                gameType: "cricket",
+                title: "ind vs aus",
+                marketId: "3",
+                teamA: "india",
+                teamB: "aus",
+                teamC: null,
+                startAt: "2023-05-05T10:26:36.070Z",
+                stopAt: null,
+                matchImage: null,
+                teamA_Image: null,
+                teamB_Image: null,
+                match_max_bet: null,
+                betfair_match_min_bet: 20,
+                betfair_match_max_bet: 80,
+                betfair_session_min_bet: 0,
+                betfair_session_max_bet: 0,
+                betfair_bookmaker_min_bet: 0,
+                betfair_bookmaker_max_bet: 0,
+                bookmaker_manual_min_bet: 0,
+                bookmaker_manual_max_bet: 0,
+                manaual_session_min_bet: 0,
+                manaual_session_max_bet: 0,
+                apiMatchActive: null,
+                apiBookMakerActive: null,
+                apiSessionActive: null,
+                manualBookMakerActive: null,
+                manualSessionActive: null,
+              },
+            ],
+          };
+          console.log(data);
+          setMatchData(data)
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      useEffect(()=> {
+        console.log(matchData)
+        getAllMatches()
+        console.log(matchData)
+      },[])
     return (
         <>
-            <Odds onClick={onClick} top={true} />
-            <Odds onClick={onClick} top={false} />
+            {/* <Odds onClick={onClick} top={false} /> */}
+            {matchData.map(match => {
+              return(
+                  <Odds onClick={onClick} top={true} match={match}/>
+              )  
+            })}
+            {/* <Odds onClick={onClick} top={false} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
-            <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
+            <Odds onClick={onClick} top={false} blur={true} upcoming={true} /> */}
         </>
     )
 }

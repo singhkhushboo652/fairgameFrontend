@@ -1539,7 +1539,10 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 const UpdateAvailableBalance = async (body) => {
   try {
     console.log("body", body);
-    const { data } = await adminAxios.post(`/fair-game-wallet/updateBalance`, body);
+    const { data } = await adminAxios.post(
+      `/fair-game-wallet/updateBalance`,
+      body
+    );
     console.log(data);
   } catch (e) {
     console.log(e);
